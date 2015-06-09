@@ -1,8 +1,6 @@
 import React from 'react';
 import Router from 'react-router';
 
-import routes from './routes';
-
 var Link = Router.Link;
 var RouteHandler = Router.RouteHandler;
 

@@ -16,8 +16,6 @@ var gulp    = require('gulp'),
 
 ///--------------///
 
-///--------------///
-
 function bundle(filename) {
 	var bundler = watchify(browserify('./app/client/' + filename + '.js'));
 
@@ -47,11 +45,11 @@ gulp.task('ejs', function() {
 });
 
 gulp.task('jsx', function() {
-	return gulp.src('app/client/**/*.react.js')
+	return gulp.src('app/**/*.react.js')
 		.pipe(babel())
 		.pipe(react())
 		.pipe(uglify())
-		.pipe(gulp.dest('dist/client'));
+		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('css', function() {
