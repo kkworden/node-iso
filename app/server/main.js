@@ -11,7 +11,6 @@ import path from 'path';
 import React from 'react';
 import Router from 'react-router';
 
-import {App} from '../client/app.react';
 import routes from '../shared/routes.react';
 
 ///--------------///
