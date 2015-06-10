@@ -1,12 +1,12 @@
 import React from 'react';
 import Router from 'react-router';
 
-var DefaultRoute = Router.DefaultRoute;
-var Route = Router.Route;
-
 import {App} from '../client/app.react';
 import {Faq} from '../client/home/faq.react';
 import {Home} from '../client/home/home.react';
+
+var DefaultRoute = Router.DefaultRoute;
+var Route = Router.Route;
 
 ///--------------///
 

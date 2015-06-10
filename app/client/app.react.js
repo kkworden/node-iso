@@ -18,7 +18,9 @@ export class App extends React.Component
 					</div>
 				</nav>
 
-				<RouteHandler />
+				<div className="container">
+					<RouteHandler />
+				</div>
 			</div>
 		);
 	}
