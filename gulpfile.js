@@ -3,8 +3,6 @@ var gulp    = require('gulp'),
 	babel  = require('gulp-babel'),
 	concat = require('gulp-concat'),
 	es     = require('event-stream'),
-	reload = require('gulp-livereload'),
-	rename = require('gulp-rename'),
 	react  = require('gulp-react'),
 	browserify = require('browserify'),
 	reactify   = require('reactify'),
@@ -36,12 +34,11 @@ gulp.task('server', function() {
 		.pipe(babel())
 		.pipe(uglify())
 		.pipe(gulp.dest('dist/server'))
-		.pipe(reload());
 });
 
 gulp.task('ejs', function() {
 	return gulp.src('app/server/views/**/*.ejs')
-		.pipe(gulp.dest('dist/server/views'));
+		.pipe(gulp.dest('dist/server/views'))
 });
 
 gulp.task('jsx', function() {
@@ -49,14 +46,14 @@ gulp.task('jsx', function() {
 		.pipe(babel())
 		.pipe(react())
 		.pipe(uglify())
-		.pipe(gulp.dest('dist/'));
+		.pipe(gulp.dest('dist/'))
 });
 
 gulp.task('css', function() {
 	return gulp.src('app/client/**/*.css')
 		.pipe(concat('stylesheet.css'))
 		.pipe(uglify())
-		.pipe(gulp.dest('dist/client'));
+		.pipe(gulp.dest('dist/client'))
 });
 
 gulp.task('bundle', ['jsx'], function() {
@@ -65,7 +62,7 @@ gulp.task('bundle', ['jsx'], function() {
 });
 
 gulp.task('start', ['server', 'bundle', 'css', 'ejs'], function(cb) {
-	exec('node dist/server/main.js', function(err, stdout, stderr) {
+	exec('nodemon dist/server/main.js', function(err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
 		cb(err);
