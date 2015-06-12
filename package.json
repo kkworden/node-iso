@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run preinstall && gulp",
+    "production": "gulp run production",
     "preinstall": "bower install bootstrap-css"
   },
   "keywords": [
