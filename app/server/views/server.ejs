@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Example app</title>
+		<link rel="stylesheet" type="text/css" href="../__res__/bower/bootstrap-css/css/bootstrap.min.css" />
+
+		<style type="text/css">
+			.code
+			{
+				background:#efefef;
+				font-family:monospace;
+			}
+		</style>
+	</head>
+	<body>
+		<br /><br />
+		<div class="container">
+			<h1>Hey.</h1>
+			This response was 100% server-side! No isomorphism here.
+			
+			<br /><br />
+
+			If you look in <span class="code">app/server/main.js</span>, you'll see that you can intercept certain routes before they are passed to
+			react-router. In addition, in <span class="code">app/client/app.react.js</span>, you must use the anchor tag (&lt;a href&gt;) to route
+			the request to the server-side, IF you're linking your users directly to the resource/page.
+
+			<br /><br />
+
+			<h1>What's the point?</h1>
+			You can do full server-side processing! What if you need to process session data, log a user in, or store something to your database, but you don't want to do it through AJAX?
+			Doing it through AJAX allows the user to see what data is passed to the server much easier than doing it all server-side. Besides, isomorphism doesn't make sense if you
+			want to have an API, now does it?
+		</div>
+	</body>
+</html>

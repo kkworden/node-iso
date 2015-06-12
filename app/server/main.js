@@ -29,6 +29,10 @@ app.use(cookieParser());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.get('/__proc__/server', function(req, res) {
+	res.render('server');
+});
+
 app.get('*', function(req, res) {
 	Router.run(routes, req.path, function(Handler, state) {
 		var element = React.createElement(Handler);
