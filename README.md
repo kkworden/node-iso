@@ -14,6 +14,6 @@ It uses the following technologies:
 As you can see, a very barebones project.
 
 # How to run the app
-Clone the repo and run: `gulp`
+Clone the repo and run: `npm start`
 
-This will build all of the files, parse JSX, transpile ES6, create browserify bundles, etc.
+By default this will run in development mode. If you want to run in production mode (no file watching), run: `npm run production`
