@@ -1,21 +1,51 @@
-var gulp    = require('gulp'),
-	uglify = require('gulp-uglify'),
-	babel  = require('gulp-babel'),
-	concat = require('gulp-concat'),
-	es     = require('event-stream'),
-	react  = require('gulp-react'),
+var gulp     = require('gulp'),
+	uglify  = require('gulp-uglify'),
+	babel   = require('gulp-babel'),
+	concat  = require('gulp-concat'),
+	es      = require('event-stream'),
+	react   = require('gulp-react'),
 	browserify = require('browserify'),
 	reactify   = require('reactify'),
 	babelify   = require('babelify'),
-	watchify   = require('watchify'),
-	buffer = require('vinyl-buffer'),
-	source = require('vinyl-source-stream'),
-	exec   = require('child_process').exec;
+	buffer  = require('vinyl-buffer'),
+	source  = require('vinyl-source-stream'),
+	spawn   = require('child_process').spawn,
+	gutil   = require('gulp-util');
 
 ///--------------///
 
+var p;
+
+var SRC_SERVER = 'app/server/**/*.js';
+var SRC_EJS = 'app/server/views/**/*.ejs';
+var SRC_JSX = 'app/**/*.react.js';
+var SRC_CSS = 'app/client/**/*.css';
+
+///--------------///
+
+var runServer = function() {
+	if(p)
+	{
+		gutil.log(gutil.colors.red('Server reloaded due to file change.'));
+		p.kill();
+	}
+
+	p = spawn('node', ['dist/server/main.js']);
+
+	p.stdout.setEncoding('utf8');
+	p.stderr.setEncoding('utf8');
+
+	p.stdout.on('data', function(data) {
+		process.stdout.write(data);
+	});
+
+	p.stderr.on('data', function(data) {
+		process.stdout.write(data);
+	});
+}
+
 function bundle(filename) {
-	var bundler = watchify(browserify('./app/client/' + filename + '.js'));
+	var bundler = browserify('./app/client/' + filename + '.js');
 
 	bundler.transform(babelify);
 	bundler.transform(reactify);
@@ -30,30 +60,30 @@ function bundle(filename) {
 ///--------------///
 
 gulp.task('server', function() {
-	return gulp.src('app/server/**/*.js')
+	return gulp.src(SRC_SERVER)
 		.pipe(babel())
 		.pipe(uglify())
-		.pipe(gulp.dest('dist/server'))
+		.pipe(gulp.dest('dist/server'));
 });
 
 gulp.task('ejs', function() {
-	return gulp.src('app/server/views/**/*.ejs')
-		.pipe(gulp.dest('dist/server/views'))
+	return gulp.src(SRC_EJS)
+		.pipe(gulp.dest('dist/server/views'));
 });
 
 gulp.task('jsx', function() {
-	return gulp.src('app/**/*.react.js')
+	return gulp.src(SRC_JSX)
 		.pipe(babel())
 		.pipe(react())
 		.pipe(uglify())
-		.pipe(gulp.dest('dist/'))
+		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('css', function() {
-	return gulp.src('app/client/**/*.css')
+	return gulp.src(SRC_CSS)
 		.pipe(concat('stylesheet.css'))
 		.pipe(uglify())
-		.pipe(gulp.dest('dist/client'))
+		.pipe(gulp.dest('dist/client'));
 });
 
 gulp.task('bundle', ['jsx'], function() {
@@ -61,14 +91,14 @@ gulp.task('bundle', ['jsx'], function() {
 	return bundle('main');
 });
 
-gulp.task('start', ['server', 'bundle', 'css', 'ejs'], function(cb) {
-	exec('nodemon dist/server/main.js', function(err, stdout, stderr) {
-		console.log(stdout);
-		console.log(stderr);
-		cb(err);
-	});
+gulp.task('watch', function() {
+	gulp.watch(SRC_SERVER, ['server']).on('change', runServer);
+	gulp.watch(SRC_EJS, ['ejs']).on('change', runServer);
+	gulp.watch(SRC_JSX, ['bundle']).on('change', runServer);
+	gulp.watch(SRC_CSS, ['css']).on('change', runServer);
 });
 
 ///--------------///
 
-gulp.task('default', ['server', 'bundle', 'css', 'ejs', 'start']);
+gulp.task('default', ['server', 'bundle', 'css', 'ejs', 'watch'], runServer);
+gulp.task('production', ['server', 'bundle', 'css', 'ejs'], runServer);
