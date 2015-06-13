@@ -6,5 +6,5 @@ import routes from '../shared/routes.react';
 ///--------------///
 
 Router.run(routes, Router.HistoryLocation, function(Handler) {
-	React.render(<Handler />, document.getElementById('mount'));
+	React.render(<Handler />, document.getElementById('main'));
 });

@@ -35,9 +35,9 @@ app.get('/__proc__/server', function(req, res) {
 
 app.get('*', function(req, res) {
 	Router.run(routes, req.path, function(Handler, state) {
-		var element = React.createElement(Handler);
-		var html = React.renderToString(element);
-		res.render('index', { reactContent: html });
+		var main = React.renderToString(<Handler />);
+
+		res.render('index', { mainContent: main });
 	});
 });
 
